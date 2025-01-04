@@ -1,19 +1,32 @@
 const { stl } = require("./constants");
 
+const isString = (token) => {
+  return (
+    token[0] === '"' &&
+    token[token.length - 1] === '"' &&
+    token !== "(" &&
+    token !== ")" &&
+    !stl[token]
+  );
+};
+
 // 1. Lexing: Tokenize the code input
 function getTokenProperties(token) {
   if (Number(token)) {
     return { type: "Number", value: Number(token) };
   }
-  if (token === ")" || token === "(") {
+  else if (isString(token)) {
+    return { type: "String", value: String(token) };
+  }
+  else if (token === ")" || token === "(") {
     return { type: "Paranthesis", value: token };
   }
 
-  if (stl[token]) {
+  else if (stl[token]) {
     return { type: "Function", value: token };
   }
 
-  if (token === "barabar") {
+  else if (token === "barabar") {
     return { type: "VariableDeclaration", value: token };
   }
 
